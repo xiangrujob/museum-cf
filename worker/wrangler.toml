@@ -1,0 +1,8 @@
+name = "knowledge-museum-api"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "knowledge-museum"
+database_id = "c2915960-6e67-4b90-85d6-2e239518ae2e"
