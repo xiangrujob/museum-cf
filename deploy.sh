@@ -18,7 +18,7 @@ deploy_worker() {
 deploy_frontend() {
   echo "🌐 Deploying Frontend..."
   cd "$SCRIPT_DIR/frontend"
-  wrangler pages deploy . --project-name=knowledge-museum
+  wrangler pages deploy . --project-name=knowledge-museum --branch=production --commit-dirty=true
   echo "✅ Frontend deployed → https://knowledge-museum.pages.dev"
 }
 
