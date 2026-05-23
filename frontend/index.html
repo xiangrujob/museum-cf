@@ -575,8 +575,7 @@ body{padding-top:38px;}
 .skin-btn.active{color:var(--accent);font-weight:500;}
 .skin-btn.active::after{transform:scaleX(1);}
 .skin-divider{width:1px;height:14px;background:var(--border-mid);flex-shrink:0;}
-#heroTitle{cursor:pointer;}
-#heroTitle:hover em{text-decoration:underline;text-underline-offset:3px;text-decoration-style:dotted;}
+#heroTitle{cursor:default;}
 
 /* ── SKIN: 我可能不会爱你 (love · default) ─────────── */
 [data-skin="love"]{
@@ -788,6 +787,48 @@ body{padding-top:38px;}
 .det-notes-preview[data-md-style="drip"] table{width:100%;border-collapse:collapse;margin-bottom:.8rem;font-size:14px;}
 .det-notes-preview[data-md-style="drip"] th{background:#1a1a1a;color:#ff4500;padding:.4rem .8rem;border:1px solid #333;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
 .det-notes-preview[data-md-style="drip"] td{padding:.4rem .8rem;border:1px solid #1a1a1a;color:#bbb;}
+
+/* ── QUOTE OVERLAY ──────────────────────────────────── */
+#quoteOverlay{
+  display:none;position:fixed;inset:0;z-index:400;
+  align-items:center;justify-content:center;cursor:pointer;
+}
+#quoteOverlay.show{display:flex;animation:qIn .55s cubic-bezier(.22,.68,0,1.2) forwards;}
+#quoteOverlay.hiding{animation:qOut .38s ease forwards;}
+@keyframes qIn{from{opacity:0;transform:translateY(-14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes qOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.96)}}
+.quote-bg{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(7px);}
+.quote-card{
+  position:relative;z-index:1;text-align:center;
+  padding:2.8rem 3.8rem;max-width:580px;width:90vw;
+  border:1px solid var(--accent-border);
+  background:var(--surface-2);border-radius:4px;
+}
+.quote-text{
+  font-family:var(--display);font-size:clamp(17px,3vw,27px);
+  font-weight:400;color:var(--fg-bright);line-height:1.7;letter-spacing:.02em;
+}
+.quote-dismiss{
+  margin-top:1.3rem;font-family:var(--ui);font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--fg-dim);opacity:.7;
+}
+/* skin-specific card overrides */
+[data-skin="love"] .quote-card{border-color:rgba(212,132,90,.45);background:rgba(21,14,12,.94);}
+[data-skin="love"] .quote-text{font-style:italic;letter-spacing:.03em;}
+[data-skin="soldier"] .quote-card{border-color:rgba(138,170,42,.5);background:rgba(9,13,5,.95);border-radius:0;border-width:1px 1px 1px 3px;}
+[data-skin="soldier"] .quote-text{font-family:'Courier New',monospace;font-size:clamp(13px,2.2vw,20px);letter-spacing:.08em;text-transform:uppercase;}
+[data-skin="condor"] .quote-card{border-color:rgba(200,135,10,.55);background:rgba(14,10,5,.94);}
+[data-skin="condor"] .quote-text{color:#f5e8c0;letter-spacing:.06em;}
+[data-skin="someday"] .quote-card{border-color:rgba(155,127,255,.45);background:rgba(9,6,18,.94);}
+[data-skin="someday"] .quote-text{font-family:'Inter',system-ui,sans-serif;font-weight:300;letter-spacing:.04em;}
+[data-skin="kiss"] .quote-bg{background:rgba(61,21,37,.55);}
+[data-skin="kiss"] .quote-card{border-color:rgba(224,85,122,.4);background:rgba(254,238,244,.97);border-radius:14px;}
+[data-skin="kiss"] .quote-text{color:#3d1525;font-style:italic;font-size:clamp(16px,2.8vw,24px);}
+[data-skin="kiss"] .quote-dismiss{color:rgba(61,21,37,.45);}
+[data-skin="tower"] .quote-bg{background:rgba(26,42,58,.5);}
+[data-skin="tower"] .quote-card{border-color:rgba(44,111,173,.45);background:rgba(242,245,248,.97);border-radius:2px;}
+[data-skin="tower"] .quote-text{font-family:'Inter',system-ui,sans-serif;font-weight:300;color:#1a2a3a;font-size:clamp(15px,2.5vw,22px);letter-spacing:.03em;}
+[data-skin="tower"] .quote-dismiss{color:rgba(26,42,58,.45);}
 </style>
 </head>
 <body>
@@ -795,17 +836,17 @@ body{padding-top:38px;}
 <!-- SKIN BAR -->
 <div class="skin-bar" id="skinBar">
   <div class="skin-bar-inner">
-    <button class="skin-btn" data-skin="love"    onclick="applySkin('love')">我可能不会爱你</button>
+    <button class="skin-btn" data-skin="love"    onclick="applySkin('love',true)">我可能不会爱你</button>
     <div class="skin-divider"></div>
-    <button class="skin-btn" data-skin="soldier" onclick="applySkin('soldier')">士兵突击</button>
+    <button class="skin-btn" data-skin="soldier" onclick="applySkin('soldier',true)">士兵突击</button>
     <div class="skin-divider"></div>
-    <button class="skin-btn" data-skin="condor"  onclick="applySkin('condor')">射雕英雄传</button>
+    <button class="skin-btn" data-skin="condor"  onclick="applySkin('condor',true)">射雕英雄传</button>
     <div class="skin-divider"></div>
-    <button class="skin-btn" data-skin="someday" onclick="applySkin('someday')">想见你</button>
+    <button class="skin-btn" data-skin="someday" onclick="applySkin('someday',true)">想见你</button>
     <div class="skin-divider"></div>
-    <button class="skin-btn" data-skin="kiss"    onclick="applySkin('kiss')">恶作剧之吻</button>
+    <button class="skin-btn" data-skin="kiss"    onclick="applySkin('kiss',true)">恶作剧之吻</button>
     <div class="skin-divider"></div>
-    <button class="skin-btn" data-skin="tower"   onclick="applySkin('tower')">白色巨塔</button>
+    <button class="skin-btn" data-skin="tower"   onclick="applySkin('tower',true)">白色巨塔</button>
   </div>
 </div>
 
@@ -814,7 +855,7 @@ body{padding-top:38px;}
     <div class="museum-hero-bg"></div>
     <div class="museum-hero-content">
       <div class="museum-hero-sub" id="heroSub"></div>
-      <div class="museum-hero-title" id="heroTitle" onclick="openUsernameRename()" title="点击修改名字"></div>
+      <div class="museum-hero-title" id="heroTitle"></div>
       <div class="hero-rule"></div>
     </div>
   </div>
@@ -975,18 +1016,12 @@ body{padding-top:38px;}
   </div>
 </div>
 
-<!-- MODAL: USERNAME -->
-<div class="modal-overlay" id="usernameModal">
-  <div class="modal-box" style="width:360px">
-    <div class="modal-title" id="usernameTitle"></div>
-    <p class="modal-hint" id="usernameHint"></p>
-    <label class="modal-label">名字</label>
-    <input class="modal-input" id="usernameInput" type="text" placeholder="输入名字…"
-      onkeydown="if(event.key==='Enter')submitUsername()">
-    <div class="modal-btns">
-      <button class="mbtn mbtn-cancel" onclick="skipUsername()">先跳过</button>
-      <button class="mbtn mbtn-ok" onclick="submitUsername()">确定</button>
-    </div>
+<!-- QUOTE OVERLAY -->
+<div id="quoteOverlay" onclick="dismissQuote()">
+  <div class="quote-bg"></div>
+  <div class="quote-card">
+    <div class="quote-text" id="quoteText"></div>
+    <div class="quote-dismiss">· 点击任意处关闭 ·</div>
   </div>
 </div>
 
@@ -998,98 +1033,252 @@ const API='https://knowledge-museum-api.xr-dev.workers.dev';
 // ── SKINS ──────────────────────────────────────────────
 const SKINS={
   love:{
-    label:'我可能不会爱你',greet:'你是谁？',
-    hint:'名字会出现在你的知识地图上',
+    label:'我可能不会爱你',
     heroSub:'personal knowledge base',heroTitle:"'s 知识地图",
     footer:'慢慢来，比较快 · Powered by Cloudflare D1',
     stats:['知识总数','学习中','已掌握','完成率'],
     statusLabels:{todo:'待学习',learning:'学习中',done:'已掌握'},
     light:false,
+    quotes:[
+      '慢慢来，比较快。',
+      '你知道吗，我们注定不会是普通朋友的。',
+      '人生已经很苦了，能甜一点，就甜一点。',
+      '有一种感情，就是两个人，一起把时间浪费在彼此身上。',
+      '我只是不想让自己后悔。',
+      '失去了才知道珍贵，得到了才知道沉重。',
+      '大仁哥，你知道吗，我一直都在。',
+      '等你想通了，我还在这里。',
+      '就算失败，我也想试试看。',
+      '我陪着你，不管你要往哪里去。',
+      '你是那么清楚，而我是那么模糊。',
+      '世界上没有如果，只有结果和后果。',
+      '有些话现在不说，以后就没机会了。',
+      '我喜欢你，这件事，我决定直接告诉你。',
+      '两个人在一起，本来就是需要努力的。',
+      '不完美的相遇，完美的结局。',
+      '我以为我可以假装，结果我做不到。',
+      '也许是命运，把我们安排在一起。',
+      '有些事，不是不想做，是不敢做。',
+      '最后我们都会找到自己的位置，也找到属于自己的人。',
+      '我不是不爱你，我只是还没准备好。',
+      '现在看你，每次都好像第一次见到你一样。',
+      '人生不能总是等，有些时机稍纵即逝。',
+      '这是我见过的，最好的时光。',
+      '不管未来怎么样，至少现在，我在你身边。',
+    ],
   },
   soldier:{
-    label:'士兵突击',greet:'报上名来',
-    hint:'报上你的番号！',
+    label:'士兵突击',
     heroSub:'个人战术知识库',heroTitle:'的阵地',
     footer:'不抛弃，不放弃 · 坚守阵地',
     stats:['战术总数','执行中','已掌握','完成率'],
     statusLabels:{todo:'待执行',learning:'执行中',done:'已掌握'},
     light:false,
+    quotes:[
+      '不抛弃，不放弃。',
+      '好好活着，做有意义的事。',
+      '有些人，就是天生的兵。',
+      '我选择了这条路，就没有退路。',
+      '困难不是来打倒我们的，是让我们变强的。',
+      '战士，不是因为没有软弱，而是选择了坚强。',
+      '只要心在，就不算输。',
+      '人活着，是为了做有意义的事。',
+      '你不知道你有多了不起，因为你没有放弃。',
+      '连队是家，战友是兄弟。',
+      '努力不一定成功，但放弃一定失败。',
+      '认准了一件事，就坚持到底。',
+      '我不聪明，但我比别人更能吃苦。',
+      '越是难的时候，越要撑住。',
+      '有一天，你会为今天的坚持而感到骄傲。',
+      '钢铁是怎么炼成的？是在磨难中炼成的。',
+      '我们都是普通人，但普通人也能做不普通的事。',
+      '当兵，要么做最好的兵，要么就别当。',
+      '每一块土地都值得守护。',
+      '战场上，没有人来救你，只有你自己。',
+      '做一个真正的战士，用行动说话。',
+      '许三多，你是个兵，不是孬种。',
+      '只有经历过磨难的人，才能体会到胜利的意义。',
+      '再难的事，迈出第一步就对了。',
+      '让我们成为彼此的荣耀。',
+    ],
   },
   condor:{
-    label:'射雕英雄传',greet:'侠士留名',
-    hint:'留下侠号，方便记录武学心得',
+    label:'射雕英雄传',
     heroSub:'个人武学知识总录',heroTitle:'的武功秘籍',
     footer:'侠之大者，为国为民 · 武学修炼中',
     stats:['秘籍总数','修炼中','已精通','功法进度'],
     statusLabels:{todo:'未修炼',learning:'修炼中',done:'已精通'},
     light:false,
+    quotes:[
+      '侠之大者，为国为民。',
+      '问世间情是何物，直教生死相许。',
+      '武学之道，在乎一心。',
+      '人在江湖，身不由己。',
+      '江湖险恶，但义气长存。',
+      '真正的勇气，不是无所畏惧，而是知难而进。',
+      '武功再高，也要用在正道上。',
+      '大道至简，万法归一。',
+      '强者胜人以力，圣者胜人以仁。',
+      '宁可站着死，不能跪着生。',
+      '苦练多年，为的是护人，不是伤人。',
+      '江湖儿女，恩怨分明。',
+      '天下武功，无坚不破，唯快不破。',
+      '英雄不问出处，江湖不论年岁。',
+      '情义二字，重于泰山。',
+      '练功千日，不及实战一时。',
+      '仁义礼智信，乃君子之道。',
+      '男儿志在四方，岂能久居一地。',
+      '有些仇，可以不报；有些义，不能不尽。',
+      '学武不为称王，只为守护一份情。',
+      '师恩深似海，父恩高如山。',
+      '为人正道，天必佑之。',
+      '桃花影落飞神剑，碧海潮生按玉箫。',
+      '一人独行，胜过千人无义。',
+      '不辞辛苦，只为在这世上留下一点儿光。',
+    ],
   },
   someday:{
-    label:'想见你',greet:'穿越前先留个名字',
-    hint:'穿越时空，记得带上你的名字',
+    label:'想见你',
     heroSub:'穿越时空的知识笔记',heroTitle:'的时空笔记',
     footer:'1998 ↔ 2019 · 穿越时空只为遇见知识',
     stats:['笔记总数','探索中','已记录','时空进度'],
     statusLabels:{todo:'未探索',learning:'探索中',done:'已记录'},
     light:false,
+    quotes:[
+      '如果可以，我想再见你一次。',
+      '穿越时空，我只是想找到你。',
+      '无论在哪个时空，我都认得你。',
+      '爱一个人，就是在任何时间、任何地方，都想见到他。',
+      '我回来，只是为了告诉你，你不孤单。',
+      '每一次选择，都通向不同的未来。',
+      '那首歌，是为你写的。',
+      '我们之间的距离，不是空间，而是时间。',
+      '不管几次轮回，我都会找到你。',
+      '原来你一直在那里，只是我没有看见。',
+      '命运让我们相遇，让我们珍惜。',
+      '时间是最温柔的东西，它让一切成为过去。',
+      '只要还记得，就不算真的消失。',
+      '那一刻，时间静止了。',
+      '1998年的你，在等2019年的我吗？',
+      '不同的人，相同的眼神。',
+      '我不怕改变历史，我只怕你消失在历史里。',
+      '你是我跨越时空也要找到的人。',
+      '此刻，此地，此人，已足够。',
+      '我们都在自己的时空里，想念着对方。',
+      '有些话，要在对的时间说，才有意义。',
+      '有些错误，不用再犯第二次。',
+      '我愿意等，等你在任何时候出现。',
+      '我们也许在错的时间遇见，但在对的世界相爱。',
+      '不同的时空，同一份爱。',
+    ],
   },
   kiss:{
-    label:'恶作剧之吻',greet:'我才不是故意问的',
-    hint:'...才不是特意要知道你名字的（小声）',
+    label:'恶作剧之吻',
     heroSub:'才不是特意整理的知识库',heroTitle:'的笔记本',
     footer:'哼，才不是为你整理的 · Powered by Cloudflare D1',
     stats:['条目总数','学习中','掌握啦！','完成率'],
     statusLabels:{todo:'还没看',learning:'学习中',done:'掌握啦！'},
     light:true,
+    quotes:[
+      '哼，才不是为你做的呢！',
+      '我才不稀罕你多看我一眼！',
+      '谁稀罕你来找我，是你自己来的！',
+      '哦，那个……谢谢啦。（超小声）',
+      '我才没有担心你，只是顺便经过。',
+      '不许走！……才不是因为舍不得。',
+      '你这个讨厌鬼，为什么总是出现？',
+      '哼，下次不帮你了！（一定还会帮的）',
+      '我有点喜欢你，就一点点而已。',
+      '才不是在等你，我只是刚好在这里。',
+      '你的脸又靠近了，讨厌……（但心跳加速）',
+      '为什么要对我这么好……（小声）',
+      '这种事情，任何人遇到都会帮忙的，不是专程为你。',
+      '你太笨了，我来教你好了。（得意）',
+      '我就知道你一个人搞不定！',
+      '哼，看在你这么可怜的份上……',
+      '不行！……等等，算了，随便你。',
+      '你怎么可以这么坏！（但其实在笑）',
+      '这份笔记……不要误会，只是多的而已。',
+      '我绝对没有看你多少次！（完全在看）',
+      '说好了，就这一次，下次不帮了。（每次都帮）',
+      '啊！！才没有脸红！！',
+      '放开！（但没有用力）',
+      '我以为你不会来的……才不是在失落呢。',
+      '反正又不是真的在乎你，就是随便说说。（其实是真的）',
+    ],
   },
   tower:{
-    label:'白色巨塔',greet:'病历登记',
-    hint:'请填写患者基本信息',
+    label:'白色巨塔',
     heroSub:'个人知识病历档案',heroTitle:'的病历档案',
     footer:'医者仁心 · 知识体系建设中',
     stats:['病历总数','诊断中','已确诊','诊断完成率'],
     statusLabels:{todo:'待诊断',learning:'诊断中',done:'已确诊'},
     light:true,
+    quotes:[
+      '医者仁心，济世救人。',
+      '每一个生命，都值得被珍视。',
+      '手术台上，容不得一丝犹豫。',
+      '病人把生命托付给我，我不能辜负。',
+      '真正的医生，永远把患者放在第一位。',
+      '权力和责任，从来都是相伴而生的。',
+      '做对的事，即使代价高昂。',
+      '在死亡面前，人人平等。',
+      '医学是科学，也是艺术。',
+      '一个误诊，可能改变一个人的一生。',
+      '医院里，最珍贵的不是技术，而是良心。',
+      '知识是治病的武器，良知是从医的根本。',
+      '面对死亡，我们能做的，是让人有尊严地离开。',
+      '每一个病历背后，都是一段人生。',
+      '医生的职责，不仅是治疗疾病，更是给予希望。',
+      '时间就是生命，在急救室里尤其如此。',
+      '诊断需要数据，更需要经验和直觉。',
+      '白大衣，是权威，更是责任。',
+      '有些病，治不好；但有些话，一定要说。',
+      '医学的边界，也是人类良知的边界。',
+      '信任是医患关系中最重要的药。',
+      '每一台手术，都是一场生死博弈。',
+      '学无止境，医道如此。',
+      '科学的道路，从不因情感而转弯。',
+      '我选择这条路，就要对每一个患者负责。',
+    ],
   },
 };
 const SKIN_KEY='kb_skin2';
 let currentSkin=localStorage.getItem(SKIN_KEY)||'love';
 function sk(){return SKINS[currentSkin];}
-function getUserName(s){return localStorage.getItem('kb_name_'+s)||'xr';}
 
-function applySkin(id){
+function applySkin(id,showQuote=false){
   currentSkin=id;localStorage.setItem(SKIN_KEY,id);
-  const s=SKINS[id],name=getUserName(id);
+  const s=SKINS[id];
   document.documentElement.dataset.skin=id;
   document.documentElement.setAttribute('data-theme',s.light?'light':'dark');
   document.getElementById('themeBtn').textContent=s.light?'☀️':'🌙';
   document.getElementById('heroSub').textContent=s.heroSub;
-  document.getElementById('heroTitle').innerHTML=`<em>${name}</em>${s.heroTitle}`;
+  document.getElementById('heroTitle').innerHTML=`<em>xr</em>${s.heroTitle}`;
   document.getElementById('siteFooter').textContent=s.footer;
   document.querySelectorAll('.skin-btn').forEach(b=>b.classList.toggle('active',b.dataset.skin===id));
   if(db.length)renderStats();
-  checkUsername(id);
+  if(showQuote)setTimeout(()=>showSkinQuote(id),120);
 }
-function checkUsername(id){
-  if(!localStorage.getItem('kb_name_'+id))setTimeout(()=>openUsernameModal(id),300);
+
+let quoteTimer=null;
+function showSkinQuote(id){
+  const q=SKINS[id].quotes[Math.floor(Math.random()*SKINS[id].quotes.length)];
+  const ov=document.getElementById('quoteOverlay');
+  document.getElementById('quoteText').textContent=q;
+  clearTimeout(quoteTimer);
+  ov.classList.remove('hiding','show');
+  ov.style.display='flex';
+  void ov.offsetWidth;
+  ov.classList.add('show');
+  quoteTimer=setTimeout(dismissQuote,3800);
 }
-function openUsernameModal(id){
-  const s=SKINS[id];
-  document.getElementById('usernameTitle').textContent=s.greet;
-  document.getElementById('usernameHint').textContent=s.hint;
-  document.getElementById('usernameInput').value='';
-  document.getElementById('usernameModal').classList.add('show');
-  setTimeout(()=>document.getElementById('usernameInput').focus(),60);
+function dismissQuote(){
+  clearTimeout(quoteTimer);
+  const ov=document.getElementById('quoteOverlay');
+  ov.classList.add('hiding');
+  setTimeout(()=>{ov.classList.remove('show','hiding');ov.style.display='none';},400);
 }
-function submitUsername(){
-  const name=document.getElementById('usernameInput').value.trim();if(!name)return;
-  localStorage.setItem('kb_name_'+currentSkin,name);
-  closeModal('usernameModal');
-  const s=SKINS[currentSkin];
-  document.getElementById('heroTitle').innerHTML=`<em>${name}</em>${s.heroTitle}`;
-}
-function skipUsername(){closeModal('usernameModal');}
-function openUsernameRename(){openUsernameModal(currentSkin);}
 // ── END SKINS ──────────────────────────────────────────
 const TH='kb_theme7',TK='kb_token7';
 let db=[],activeFilter='all';
@@ -1443,7 +1632,7 @@ function deleteItem(){
 function openConfirm(title,msg,cb){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMsg').textContent=msg;document.getElementById('confirmOkBtn').onclick=cb;document.getElementById('confirmModal').classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function closeMod(id,e){if(e.target.id===id)closeModal(id);}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')['authModal','wingModal','itemModal','confirmModal','usernameModal'].forEach(closeModal);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){['authModal','wingModal','itemModal','confirmModal'].forEach(closeModal);dismissQuote();}});
 
 applySkin(currentSkin);
 (async()=>{await Promise.all([loadAll(),tryAutoLogin()]);})();
