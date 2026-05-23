@@ -1353,8 +1353,8 @@ async function openDetail(wingId,pieceId){
   catch(e){switchNotesTab('text');}
 }
 function renderDetStatus(cur){
+  const sl=sk().statusLabels;
   document.getElementById('detStatusRow').innerHTML=`<span class="det-status-label">Status</span>`+
-    const sl=sk().statusLabels;
     [['todo',sl.todo],['learning',sl.learning],['done',sl.done]].map(([s,l])=>
       `<button class="status-chip${s===cur?' active':''}${isAuthed?' clickable':''}"${isAuthed?` onclick="setDetStatus('${s}')"`:''}>${l}</button>`).join('');
 }
