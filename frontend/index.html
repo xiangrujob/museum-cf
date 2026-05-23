@@ -123,7 +123,7 @@ body::before{
 
 /* ── TOOLBAR ────────────────────────────────────────── */
 .toolbar{
-  position:sticky;top:0;z-index:100;
+  position:sticky;top:38px;z-index:100;
   background:var(--surface-2);
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
@@ -551,6 +551,124 @@ body::before{
 ::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px;}
 .museum-footer{text-align:center;padding:2rem;border-top:1px solid var(--border);font-family:var(--ui);font-size:11px;color:var(--fg-dim);letter-spacing:.08em;font-weight:400;}
 
+/* ── SKIN BAR ───────────────────────────────────────── */
+body{padding-top:38px;}
+.skin-bar{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:38px;display:flex;align-items:center;justify-content:center;
+  background:var(--bg-deep);border-bottom:1px solid var(--border);
+  transition:background .4s,border-color .4s;overflow-x:auto;scrollbar-width:none;
+}
+.skin-bar::-webkit-scrollbar{display:none;}
+.skin-bar-inner{display:flex;align-items:center;}
+.skin-btn{
+  font-family:var(--ui);font-size:11px;font-weight:400;letter-spacing:.04em;
+  padding:0 13px;height:38px;border:none;background:transparent;color:var(--fg-dim);
+  cursor:pointer;transition:all .2s;white-space:nowrap;position:relative;
+}
+.skin-btn::after{
+  content:'';position:absolute;bottom:0;left:13px;right:13px;
+  height:2px;background:var(--accent);
+  transform:scaleX(0);transition:transform .2s;border-radius:2px 2px 0 0;
+}
+.skin-btn:hover{color:var(--fg-mid);}
+.skin-btn.active{color:var(--accent);font-weight:500;}
+.skin-btn.active::after{transform:scaleX(1);}
+.skin-divider{width:1px;height:14px;background:var(--border-mid);flex-shrink:0;}
+#heroTitle{cursor:pointer;}
+#heroTitle:hover em{text-decoration:underline;text-underline-offset:3px;text-decoration-style:dotted;}
+
+/* ── SKIN: 我可能不会爱你 (love · default) ─────────── */
+[data-skin="love"]{
+  --display:'Playfair Display',Georgia,serif;--body:'Cormorant Garamond',Georgia,serif;
+  --bg:#1a1210;--bg-mid:#150e0c;--bg-deep:#100b08;--surface:#221815;--surface-2:rgba(26,18,16,.96);
+  --fg:#f0ddd0;--fg-dim:rgba(240,221,208,.38);--fg-mid:rgba(240,221,208,.62);--fg-bright:#faf0e8;
+  --accent:#d4845a;--accent-dim:rgba(212,132,90,.15);--accent-border:rgba(212,132,90,.35);
+  --border:rgba(212,132,90,.12);--border-mid:rgba(212,132,90,.22);
+  --input-bg:rgba(212,132,90,.05);--row-hover:rgba(212,132,90,.07);
+  --hero-o1:rgba(10,7,5,.96);--hero-o2:rgba(10,7,5,.55);--hero-o3:rgba(10,7,5,.15);
+  --wing-ov:rgba(8,5,3,.85);--modal-bg:#150e0c;--noise:.35;--pip-check:#150e0c;
+}
+[data-skin="love"] .museum-hero-bg{background:linear-gradient(135deg,#0a0705 0%,#1a1210 100%);}
+
+/* ── SKIN: 士兵突击 (soldier) ───────────────────────── */
+[data-skin="soldier"]{
+  --display:'Impact','Arial Black',system-ui,sans-serif;--body:'Courier New',monospace;
+  --bg:#0c1008;--bg-mid:#090d05;--bg-deep:#060904;--surface:#111706;--surface-2:rgba(12,16,8,.96);
+  --fg:#b8c890;--fg-dim:rgba(184,200,144,.38);--fg-mid:rgba(184,200,144,.62);--fg-bright:#cce0a0;
+  --accent:#8aaa2a;--accent-dim:rgba(138,170,42,.15);--accent-border:rgba(138,170,42,.35);
+  --border:rgba(138,170,42,.12);--border-mid:rgba(138,170,42,.22);
+  --input-bg:rgba(138,170,42,.05);--row-hover:rgba(138,170,42,.07);
+  --hero-o1:rgba(6,9,4,.96);--hero-o2:rgba(6,9,4,.55);--hero-o3:rgba(6,9,4,.15);
+  --wing-ov:rgba(5,7,3,.88);--modal-bg:#090d05;--noise:.5;--pip-check:#090d05;
+}
+[data-skin="soldier"] .museum-hero-bg{background:linear-gradient(135deg,#060904 0%,#0c1008 100%);}
+[data-skin="soldier"] .museum-hero-title{letter-spacing:.02em;}
+[data-skin="soldier"] .museum-hero-title em{font-style:normal;letter-spacing:.04em;}
+
+/* ── SKIN: 射雕英雄传 (condor) ──────────────────────── */
+[data-skin="condor"]{
+  --display:'Playfair Display',Georgia,serif;--body:Georgia,'Times New Roman',serif;
+  --bg:#120d07;--bg-mid:#0e0a05;--bg-deep:#0a0703;--surface:#1a1409;--surface-2:rgba(18,13,7,.96);
+  --fg:#e8d5a0;--fg-dim:rgba(232,213,160,.38);--fg-mid:rgba(232,213,160,.62);--fg-bright:#f5e8c0;
+  --accent:#c8870a;--accent-dim:rgba(200,135,10,.15);--accent-border:rgba(200,135,10,.35);
+  --border:rgba(200,135,10,.12);--border-mid:rgba(200,135,10,.22);
+  --input-bg:rgba(200,135,10,.05);--row-hover:rgba(200,135,10,.07);
+  --hero-o1:rgba(10,7,3,.96);--hero-o2:rgba(10,7,3,.55);--hero-o3:rgba(10,7,3,.15);
+  --wing-ov:rgba(8,5,2,.88);--modal-bg:#0e0a05;--noise:.45;--pip-check:#0e0a05;
+}
+[data-skin="condor"] .museum-hero-bg{background:linear-gradient(135deg,#0a0703 0%,#120d07 100%);}
+[data-skin="condor"] .museum-hero-title{color:#f5e8c0;}
+
+/* ── SKIN: 想见你 (someday) ─────────────────────────── */
+[data-skin="someday"]{
+  --display:'Inter',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+  --bg:#0d0818;--bg-mid:#090612;--bg-deep:#06040d;--surface:#130f22;--surface-2:rgba(13,8,24,.96);
+  --fg:#d8c8f8;--fg-dim:rgba(216,200,248,.38);--fg-mid:rgba(216,200,248,.62);--fg-bright:#ece0ff;
+  --accent:#9b7fff;--accent-dim:rgba(155,127,255,.15);--accent-border:rgba(155,127,255,.35);
+  --border:rgba(155,127,255,.12);--border-mid:rgba(155,127,255,.22);
+  --input-bg:rgba(155,127,255,.05);--row-hover:rgba(155,127,255,.07);
+  --hero-o1:rgba(6,4,13,.96);--hero-o2:rgba(6,4,13,.55);--hero-o3:rgba(6,4,13,.15);
+  --wing-ov:rgba(5,3,10,.88);--modal-bg:#090612;--noise:.28;--pip-check:#090612;
+}
+[data-skin="someday"] .museum-hero-bg{background:linear-gradient(135deg,#06040d 0%,#0d0818 100%);}
+[data-skin="someday"] .museum-hero-title{font-family:'Inter',system-ui,sans-serif;font-weight:300;letter-spacing:.02em;color:#ece0ff;}
+[data-skin="someday"] .museum-hero-title em{font-style:normal;font-weight:300;}
+
+/* ── SKIN: 恶作剧之吻 (kiss) · light ───────────────── */
+[data-skin="kiss"]{
+  --display:Georgia,serif;--body:system-ui,-apple-system,sans-serif;
+  --bg:#fef5f8;--bg-mid:#fdeef4;--bg-deep:#fce6ee;--surface:#fff8fb;--surface-2:rgba(254,245,248,.97);
+  --fg:#3d1525;--fg-dim:rgba(61,21,37,.42);--fg-mid:rgba(61,21,37,.65);--fg-bright:rgba(61,21,37,.92);
+  --accent:#e0557a;--accent-dim:rgba(224,85,122,.1);--accent-border:rgba(224,85,122,.35);
+  --border:rgba(224,85,122,.12);--border-mid:rgba(224,85,122,.25);
+  --input-bg:rgba(224,85,122,.05);--row-hover:rgba(224,85,122,.07);
+  --hero-o1:rgba(61,21,37,.82);--hero-o2:rgba(61,21,37,.45);--hero-o3:rgba(61,21,37,.1);
+  --wing-ov:rgba(50,15,30,.75);--modal-bg:#fdeef4;--noise:.05;--pip-check:#fef5f8;
+}
+[data-skin="kiss"] .museum-hero-bg{background:linear-gradient(135deg,#f8d5e4 0%,#fef5f8 100%);}
+[data-skin="kiss"] .museum-hero-title{color:#3d1525;}
+[data-skin="kiss"] .museum-hero-title em{color:var(--accent);}
+[data-skin="kiss"] .wing-bg-overlay{background:linear-gradient(to right,rgba(61,21,37,.75) 0%,rgba(61,21,37,.4) 45%,rgba(61,21,37,.08) 100%);}
+[data-skin="kiss"] .det-hero-overlay{background:linear-gradient(135deg,rgba(61,21,37,.88) 0%,rgba(61,21,37,.3) 100%);}
+
+/* ── SKIN: 白色巨塔 (tower) · light ────────────────── */
+[data-skin="tower"]{
+  --display:'Inter',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif;
+  --bg:#f2f5f8;--bg-mid:#e8edf2;--bg-deep:#dde4ea;--surface:#f8fafc;--surface-2:rgba(242,245,248,.97);
+  --fg:#1a2a3a;--fg-dim:rgba(26,42,58,.4);--fg-mid:rgba(26,42,58,.65);--fg-bright:rgba(26,42,58,.92);
+  --accent:#2c6fad;--accent-dim:rgba(44,111,173,.1);--accent-border:rgba(44,111,173,.35);
+  --border:rgba(44,111,173,.13);--border-mid:rgba(44,111,173,.25);
+  --input-bg:rgba(44,111,173,.05);--row-hover:rgba(44,111,173,.07);
+  --hero-o1:rgba(26,42,58,.82);--hero-o2:rgba(26,42,58,.45);--hero-o3:rgba(26,42,58,.1);
+  --wing-ov:rgba(20,35,50,.78);--modal-bg:#e8edf2;--noise:.04;--pip-check:#f2f5f8;
+}
+[data-skin="tower"] .museum-hero-bg{background:linear-gradient(135deg,#dde4ea 0%,#f2f5f8 100%);}
+[data-skin="tower"] .museum-hero-title{font-family:'Inter',system-ui,sans-serif;font-weight:300;letter-spacing:.01em;color:#1a2a3a;}
+[data-skin="tower"] .museum-hero-title em{font-style:normal;color:var(--accent);}
+[data-skin="tower"] .wing-bg-overlay{background:linear-gradient(to right,rgba(20,35,50,.78) 0%,rgba(20,35,50,.42) 45%,rgba(20,35,50,.08) 100%);}
+[data-skin="tower"] .det-hero-overlay{background:linear-gradient(135deg,rgba(20,35,50,.88) 0%,rgba(20,35,50,.3) 100%);}
+
 /* ── NOTES RIGHT GROUP ──────────────────────────────── */
 .notes-right-group{display:flex;align-items:center;gap:.5rem;margin-left:auto;}
 .md-style-picker{display:flex;gap:3px;align-items:center;}
@@ -674,12 +792,29 @@ body::before{
 </head>
 <body>
 
+<!-- SKIN BAR -->
+<div class="skin-bar" id="skinBar">
+  <div class="skin-bar-inner">
+    <button class="skin-btn" data-skin="love"    onclick="applySkin('love')">我可能不会爱你</button>
+    <div class="skin-divider"></div>
+    <button class="skin-btn" data-skin="soldier" onclick="applySkin('soldier')">士兵突击</button>
+    <div class="skin-divider"></div>
+    <button class="skin-btn" data-skin="condor"  onclick="applySkin('condor')">射雕英雄传</button>
+    <div class="skin-divider"></div>
+    <button class="skin-btn" data-skin="someday" onclick="applySkin('someday')">想见你</button>
+    <div class="skin-divider"></div>
+    <button class="skin-btn" data-skin="kiss"    onclick="applySkin('kiss')">恶作剧之吻</button>
+    <div class="skin-divider"></div>
+    <button class="skin-btn" data-skin="tower"   onclick="applySkin('tower')">白色巨塔</button>
+  </div>
+</div>
+
 <div id="mainView">
   <div class="museum-hero">
     <div class="museum-hero-bg"></div>
     <div class="museum-hero-content">
-      <div class="museum-hero-sub">personal knowledge base</div>
-      <div class="museum-hero-title"><em>xr</em>'s tech knowledge database</div>
+      <div class="museum-hero-sub" id="heroSub"></div>
+      <div class="museum-hero-title" id="heroTitle" onclick="openUsernameRename()" title="点击修改名字"></div>
       <div class="hero-rule"></div>
     </div>
   </div>
@@ -705,7 +840,7 @@ body::before{
   <div class="stats-bar" id="statsBar"></div>
   <div class="filter-row" id="filterRow"></div>
   <div class="gallery" id="gallery"></div>
-  <div class="museum-footer">Powered by Cloudflare D1 · drag wings to reorder · data synced to cloud</div>
+  <div class="museum-footer" id="siteFooter"></div>
 </div>
 
 <!-- DETAIL VIEW -->
@@ -840,10 +975,122 @@ body::before{
   </div>
 </div>
 
+<!-- MODAL: USERNAME -->
+<div class="modal-overlay" id="usernameModal">
+  <div class="modal-box" style="width:360px">
+    <div class="modal-title" id="usernameTitle"></div>
+    <p class="modal-hint" id="usernameHint"></p>
+    <label class="modal-label">名字</label>
+    <input class="modal-input" id="usernameInput" type="text" placeholder="输入名字…"
+      onkeydown="if(event.key==='Enter')submitUsername()">
+    <div class="modal-btns">
+      <button class="mbtn mbtn-cancel" onclick="skipUsername()">先跳过</button>
+      <button class="mbtn mbtn-ok" onclick="submitUsername()">确定</button>
+    </div>
+  </div>
+</div>
+
 <div class="api-banner" id="apiBanner"></div>
 
 <script>
 const API='https://knowledge-museum-api.xr-dev.workers.dev';
+
+// ── SKINS ──────────────────────────────────────────────
+const SKINS={
+  love:{
+    label:'我可能不会爱你',greet:'你是谁？',
+    hint:'名字会出现在你的知识地图上',
+    heroSub:'personal knowledge base',heroTitle:"'s 知识地图",
+    footer:'慢慢来，比较快 · Powered by Cloudflare D1',
+    stats:['知识总数','学习中','已掌握','完成率'],
+    statusLabels:{todo:'待学习',learning:'学习中',done:'已掌握'},
+    light:false,
+  },
+  soldier:{
+    label:'士兵突击',greet:'报上名来',
+    hint:'报上你的番号！',
+    heroSub:'个人战术知识库',heroTitle:'的阵地',
+    footer:'不抛弃，不放弃 · 坚守阵地',
+    stats:['战术总数','执行中','已掌握','完成率'],
+    statusLabels:{todo:'待执行',learning:'执行中',done:'已掌握'},
+    light:false,
+  },
+  condor:{
+    label:'射雕英雄传',greet:'侠士留名',
+    hint:'留下侠号，方便记录武学心得',
+    heroSub:'个人武学知识总录',heroTitle:'的武功秘籍',
+    footer:'侠之大者，为国为民 · 武学修炼中',
+    stats:['秘籍总数','修炼中','已精通','功法进度'],
+    statusLabels:{todo:'未修炼',learning:'修炼中',done:'已精通'},
+    light:false,
+  },
+  someday:{
+    label:'想见你',greet:'穿越前先留个名字',
+    hint:'穿越时空，记得带上你的名字',
+    heroSub:'穿越时空的知识笔记',heroTitle:'的时空笔记',
+    footer:'1998 ↔ 2019 · 穿越时空只为遇见知识',
+    stats:['笔记总数','探索中','已记录','时空进度'],
+    statusLabels:{todo:'未探索',learning:'探索中',done:'已记录'},
+    light:false,
+  },
+  kiss:{
+    label:'恶作剧之吻',greet:'我才不是故意问的',
+    hint:'...才不是特意要知道你名字的（小声）',
+    heroSub:'才不是特意整理的知识库',heroTitle:'的笔记本',
+    footer:'哼，才不是为你整理的 · Powered by Cloudflare D1',
+    stats:['条目总数','学习中','掌握啦！','完成率'],
+    statusLabels:{todo:'还没看',learning:'学习中',done:'掌握啦！'},
+    light:true,
+  },
+  tower:{
+    label:'白色巨塔',greet:'病历登记',
+    hint:'请填写患者基本信息',
+    heroSub:'个人知识病历档案',heroTitle:'的病历档案',
+    footer:'医者仁心 · 知识体系建设中',
+    stats:['病历总数','诊断中','已确诊','诊断完成率'],
+    statusLabels:{todo:'待诊断',learning:'诊断中',done:'已确诊'},
+    light:true,
+  },
+};
+const SKIN_KEY='kb_skin2';
+let currentSkin=localStorage.getItem(SKIN_KEY)||'love';
+function sk(){return SKINS[currentSkin];}
+function getUserName(s){return localStorage.getItem('kb_name_'+s)||'xr';}
+
+function applySkin(id){
+  currentSkin=id;localStorage.setItem(SKIN_KEY,id);
+  const s=SKINS[id],name=getUserName(id);
+  document.documentElement.dataset.skin=id;
+  document.documentElement.setAttribute('data-theme',s.light?'light':'dark');
+  document.getElementById('themeBtn').textContent=s.light?'☀️':'🌙';
+  document.getElementById('heroSub').textContent=s.heroSub;
+  document.getElementById('heroTitle').innerHTML=`<em>${name}</em>${s.heroTitle}`;
+  document.getElementById('siteFooter').textContent=s.footer;
+  document.querySelectorAll('.skin-btn').forEach(b=>b.classList.toggle('active',b.dataset.skin===id));
+  if(db.length)renderStats();
+  checkUsername(id);
+}
+function checkUsername(id){
+  if(!localStorage.getItem('kb_name_'+id))setTimeout(()=>openUsernameModal(id),300);
+}
+function openUsernameModal(id){
+  const s=SKINS[id];
+  document.getElementById('usernameTitle').textContent=s.greet;
+  document.getElementById('usernameHint').textContent=s.hint;
+  document.getElementById('usernameInput').value='';
+  document.getElementById('usernameModal').classList.add('show');
+  setTimeout(()=>document.getElementById('usernameInput').focus(),60);
+}
+function submitUsername(){
+  const name=document.getElementById('usernameInput').value.trim();if(!name)return;
+  localStorage.setItem('kb_name_'+currentSkin,name);
+  closeModal('usernameModal');
+  const s=SKINS[currentSkin];
+  document.getElementById('heroTitle').innerHTML=`<em>${name}</em>${s.heroTitle}`;
+}
+function skipUsername(){closeModal('usernameModal');}
+function openUsernameRename(){openUsernameModal(currentSkin);}
+// ── END SKINS ──────────────────────────────────────────
 const TH='kb_theme7',TK='kb_token7';
 let db=[],activeFilter='all';
 let detCtx={wingId:null,pieceId:null};
@@ -966,11 +1213,12 @@ function renderStats(){
   const done=all.filter(p=>p.status==='done').length;
   const lrn=all.filter(p=>p.status==='learning').length;
   const pct=all.length?Math.round(done/all.length*100):0;
+  const [l0,l1,l2,l3]=sk().stats;
   document.getElementById('statsBar').innerHTML=`
-    <div class="stat-item"><div class="stat-n">${all.length}</div><div class="stat-l">Total topics</div></div>
-    <div class="stat-item"><div class="stat-n">${lrn}</div><div class="stat-l">In progress</div></div>
-    <div class="stat-item"><div class="stat-n">${done}</div><div class="stat-l">Mastered</div></div>
-    <div class="stat-item"><div class="stat-n">${pct}%</div><div class="stat-l">Completion</div></div>`;
+    <div class="stat-item"><div class="stat-n">${all.length}</div><div class="stat-l">${l0}</div></div>
+    <div class="stat-item"><div class="stat-n">${lrn}</div><div class="stat-l">${l1}</div></div>
+    <div class="stat-item"><div class="stat-n">${done}</div><div class="stat-l">${l2}</div></div>
+    <div class="stat-item"><div class="stat-n">${pct}%</div><div class="stat-l">${l3}</div></div>`;
 }
 function renderFilters(){
   document.getElementById('filterRow').innerHTML=
@@ -1023,7 +1271,7 @@ function renderGallery(){
         <div class="items-list">
           ${items.map(p=>{
             const sc=p.status==='done'?'done':p.status==='learning'?'learning':'';
-            const sl=p.status==='done'?'Mastered':p.status==='learning'?'In progress':'To study';
+            const sl=sk().statusLabels[p.status]||p.status;
             const refBtn=p.url
               ?`<a class="art-ref set" href="${p.url}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`
               :(isAuthed?`<span class="art-ref" onclick="promptLink('${w.id}','${p.id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>`:'');
@@ -1106,7 +1354,8 @@ async function openDetail(wingId,pieceId){
 }
 function renderDetStatus(cur){
   document.getElementById('detStatusRow').innerHTML=`<span class="det-status-label">Status</span>`+
-    [['todo','To study'],['learning','In progress'],['done','Mastered']].map(([s,l])=>
+    const sl=sk().statusLabels;
+    [['todo',sl.todo],['learning',sl.learning],['done',sl.done]].map(([s,l])=>
       `<button class="status-chip${s===cur?' active':''}${isAuthed?' clickable':''}"${isAuthed?` onclick="setDetStatus('${s}')"`:''}>${l}</button>`).join('');
 }
 async function setDetStatus(s){
@@ -1194,8 +1443,9 @@ function deleteItem(){
 function openConfirm(title,msg,cb){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMsg').textContent=msg;document.getElementById('confirmOkBtn').onclick=cb;document.getElementById('confirmModal').classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function closeMod(id,e){if(e.target.id===id)closeModal(id);}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')['authModal','wingModal','itemModal','confirmModal'].forEach(closeModal);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')['authModal','wingModal','itemModal','confirmModal','usernameModal'].forEach(closeModal);});
 
+applySkin(currentSkin);
 (async()=>{await Promise.all([loadAll(),tryAutoLogin()]);})();
 </script>
 </body>
