@@ -790,10 +790,10 @@ body{padding-top:38px;}
 
 /* ── PHOTO PINS ─────────────────────────────────────── */
 .photo-pin{
-  position:fixed;pointer-events:none;z-index:5;
+  position:fixed;pointer-events:none;z-index:90;opacity:.82;
   transform-origin:top center;
   filter:drop-shadow(2px 5px 14px rgba(0,0,0,.38));
-  transition:opacity .4s;
+  transition:opacity .42s;
 }
 .photo-pin.pin-fade{opacity:0;}
 .photo-frame{background:#fff;padding:7px 7px 26px;display:block;position:relative;}
@@ -1305,6 +1305,7 @@ function applySkin(id,showQuote=false){
   document.getElementById('siteFooter').textContent=s.footer;
   document.querySelectorAll('.skin-btn').forEach(b=>b.classList.toggle('active',b.dataset.skin===id));
   if(db.length)renderStats();
+  placePhotoPins(id);
   if(showQuote)setTimeout(()=>showSkinQuote(id),120);
 }
 
@@ -1313,28 +1314,47 @@ function placePhotoPins(skinId){
   removePhotoPins();
   const photos=SKINS[skinId]?.photos;
   if(!photos||!photos.length)return;
-  const picks=[...photos].sort(()=>Math.random()-.5).slice(0,9);
   const vw=window.innerWidth,vh=window.innerHeight;
-  const zone=Math.min(210,vw*0.16);
-  picks.forEach((url,i)=>{
-    const onLeft=i%2===0;
-    const x=onLeft
-      ? (Math.random()*zone - 55)
-      : (vw - zone - 80 + Math.random()*zone);
-    const y=38+Math.random()*(vh*0.88);
+  if(vw<960)return;
+
+  const PW=144,PH=202,VGAP=20;
+  const slots=[];
+
+  // Left column — evenly spaced rows, partially off-screen
+  const nSide=Math.min(4,Math.floor((vh-130)/(PH+VGAP)));
+  for(let i=0;i<nSide;i++){
+    slots.push({x:-42+(Math.random()-0.5)*18, y:110+i*(PH+VGAP)+(Math.random()-0.5)*16});
+  }
+  // Right column
+  for(let i=0;i<nSide;i++){
+    slots.push({x:vw-PW+42+(Math.random()-0.5)*18, y:110+i*(PH+VGAP)+(Math.random()-0.5)*16});
+  }
+  // Top row — spread across viewport, sit just below skin-bar
+  const nTop=Math.min(5,Math.floor(vw/290));
+  for(let i=0;i<nTop;i++){
+    const cx=(vw/(nTop+1))*(i+1);
+    slots.push({x:cx-PW/2+(Math.random()-0.5)*50, y:40+(Math.random()-0.5)*12});
+  }
+
+  const picked=[...photos].sort(()=>Math.random()-.5);
+  const shuffledSlots=slots.sort(()=>Math.random()-.5);
+  const count=Math.min(shuffledSlots.length,picked.length);
+
+  for(let i=0;i<count;i++){
+    const {x,y}=shuffledSlots[i];
     const rot=(Math.random()*22-11).toFixed(1);
     const el=document.createElement('div');
     el.className='photo-pin pin-fade';
     el.style.cssText=`left:${x}px;top:${y}px;transform:rotate(${rot}deg);`;
-    el.innerHTML=`<div class="photo-frame"><div class="photo-tack"></div><img src="${url}" loading="lazy" alt=""></div>`;
+    el.innerHTML=`<div class="photo-frame"><div class="photo-tack"></div><img src="${picked[i]}" loading="lazy" alt=""></div>`;
     document.body.appendChild(el);
     requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('pin-fade')));
-  });
+  }
 }
 function removePhotoPins(){
   document.querySelectorAll('.photo-pin').forEach(el=>{
     el.classList.add('pin-fade');
-    setTimeout(()=>el.remove(),420);
+    setTimeout(()=>el.remove(),440);
   });
 }
 
@@ -1615,7 +1635,6 @@ async function openDetail(wingId,pieceId){
   document.getElementById('mainView').style.display='none';
   document.getElementById('detailView').style.display='block';
   window.scrollTo(0,0);
-  placePhotoPins(currentSkin);
   try{const note=await apiFetch(`/api/pieces/${pieceId}/note`);document.getElementById('detNotes').value=note.content||'';const isMd=note.format==='markdown';switchNotesTab(isMd&&note.content?'preview':isMd?'markdown':'text');}
   catch(e){switchNotesTab('text');}
 }
@@ -1658,7 +1677,7 @@ async function saveDetail(){
   }catch(e){showBanner('Save failed','error');}
   finally{btn.disabled=false;}
 }
-function closeDetail(){removePhotoPins();document.getElementById('detailView').style.display='none';document.getElementById('mainView').style.display='block';renderAll();}
+function closeDetail(){document.getElementById('detailView').style.display='none';document.getElementById('mainView').style.display='block';renderAll();}
 
 // WING MODAL
 function openAddWing(){if(!isAuthed)return;wingEditId=null;document.getElementById('wingModalTitle').textContent='New wing';['wName','wEra','wImg','wDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('wingDeleteBtn').style.display='none';document.getElementById('wingModal').classList.add('show');}
