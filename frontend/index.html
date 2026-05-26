@@ -817,7 +817,10 @@ body{padding-top:38px;}
 [data-skin="soldier"] .photo-tack::after{background:#3a5200;}
 [data-skin="someday"] .photo-tack{background:radial-gradient(circle at 38% 35%,#d0c0ff,#7a5fdf);}
 [data-skin="someday"] .photo-tack::after{background:#5040b0;}
-@media(max-width:960px){.photo-pin{display:none;}}
+.photo-pin.pin-sm .photo-frame img{width:78px;height:100px;}
+.photo-pin.pin-sm{opacity:.5;}
+.photo-pin.pin-sm .photo-tack{width:10px;height:10px;top:-6px;}
+.photo-pin.pin-sm .photo-tack::after{height:4px;}
 
 /* ── QUOTE OVERLAY ──────────────────────────────────── */
 #quoteOverlay{
@@ -1315,33 +1318,37 @@ function placePhotoPins(skinId){
   const photos=SKINS[skinId]?.photos;
   if(!photos||!photos.length)return;
   const vw=window.innerWidth,vh=window.innerHeight;
-  if(vw<960)return;
-
-  const PW=144,PH=202,VGAP=20;
-  const slots=[];
-
-  // Left column — evenly spaced rows, partially off-screen
-  const nSide=Math.min(4,Math.floor((vh-130)/(PH+VGAP)));
-  for(let i=0;i<nSide;i++){
-    slots.push({x:-42+(Math.random()-0.5)*18, y:110+i*(PH+VGAP)+(Math.random()-0.5)*16});
-  }
-  // Right column
-  for(let i=0;i<nSide;i++){
-    slots.push({x:vw-PW+42+(Math.random()-0.5)*18, y:110+i*(PH+VGAP)+(Math.random()-0.5)*16});
-  }
-  // Top row — spread across viewport, sit just below skin-bar
-  const nTop=Math.min(5,Math.floor(vw/290));
-  for(let i=0;i<nTop;i++){
-    const cx=(vw/(nTop+1))*(i+1);
-    slots.push({x:cx-PW/2+(Math.random()-0.5)*50, y:40+(Math.random()-0.5)*12});
-  }
-
   const picked=[...photos].sort(()=>Math.random()-.5);
-  const shuffledSlots=slots.sort(()=>Math.random()-.5);
-  const count=Math.min(shuffledSlots.length,picked.length);
 
-  for(let i=0;i<count;i++){
-    const {x,y}=shuffledSlots[i];
+  if(vw<960){
+    // Mobile: 2-3 small photos pinned at top
+    const n=Math.min(3,picked.length);
+    for(let i=0;i<n;i++){
+      const cx=(vw/(n+1))*(i+1);
+      const rot=(Math.random()*18-9).toFixed(1);
+      const el=document.createElement('div');
+      el.className='photo-pin pin-fade pin-sm';
+      el.style.cssText=`left:${cx-39}px;top:${42+(Math.random()-0.5)*8}px;transform:rotate(${rot}deg);`;
+      el.innerHTML=`<div class="photo-frame"><div class="photo-tack"></div><img src="${picked[i]}" loading="lazy" alt=""></div>`;
+      document.body.appendChild(el);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('pin-fade')));
+    }
+    return;
+  }
+
+  // Desktop: exactly 6 photos — left×2, right×2, top×2
+  const PW=144,PH=202;
+  const jitter=(n)=>(Math.random()-0.5)*n;
+  const slots=[
+    {x:-42+jitter(16), y:130+jitter(20)},
+    {x:-42+jitter(16), y:130+PH+30+jitter(20)},
+    {x:vw-PW+42+jitter(16), y:130+jitter(20)},
+    {x:vw-PW+42+jitter(16), y:130+PH+30+jitter(20)},
+    {x:vw/3-PW/2+jitter(40),  y:42+jitter(10)},
+    {x:vw*2/3-PW/2+jitter(40), y:42+jitter(10)},
+  ];
+
+  slots.forEach(({x,y},i)=>{
     const rot=(Math.random()*22-11).toFixed(1);
     const el=document.createElement('div');
     el.className='photo-pin pin-fade';
@@ -1349,7 +1356,7 @@ function placePhotoPins(skinId){
     el.innerHTML=`<div class="photo-frame"><div class="photo-tack"></div><img src="${picked[i]}" loading="lazy" alt=""></div>`;
     document.body.appendChild(el);
     requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('pin-fade')));
-  }
+  });
 }
 function removePhotoPins(){
   document.querySelectorAll('.photo-pin').forEach(el=>{
