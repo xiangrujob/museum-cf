@@ -391,7 +391,7 @@ body::before{
 
 /* ── DETAIL VIEW ────────────────────────────────────── */
 #detailView{display:none;}
-.detail-wrap{max-width:780px;margin:0 auto;padding:3rem 3rem 5rem;}
+.detail-wrap{max-width:780px;margin:0 auto;padding:3rem 3rem 5rem;position:relative;z-index:10;}
 .det-top-row{display:flex;align-items:center;margin-bottom:2.5rem;}
 .det-back{
   display:inline-flex;align-items:center;gap:7px;
@@ -788,6 +788,37 @@ body{padding-top:38px;}
 .det-notes-preview[data-md-style="drip"] th{background:#1a1a1a;color:#ff4500;padding:.4rem .8rem;border:1px solid #333;text-transform:uppercase;letter-spacing:.06em;font-size:12px;}
 .det-notes-preview[data-md-style="drip"] td{padding:.4rem .8rem;border:1px solid #1a1a1a;color:#bbb;}
 
+/* ── PHOTO PINS ─────────────────────────────────────── */
+.photo-pin{
+  position:fixed;pointer-events:none;z-index:5;
+  transform-origin:top center;
+  filter:drop-shadow(2px 5px 14px rgba(0,0,0,.38));
+  transition:opacity .4s;
+}
+.photo-pin.pin-fade{opacity:0;}
+.photo-frame{background:#fff;padding:7px 7px 26px;display:block;position:relative;}
+[data-theme="dark"] .photo-frame{background:#f0ebe0;}
+.photo-frame img{display:block;width:128px;height:164px;object-fit:cover;}
+.photo-tack{
+  position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  width:15px;height:15px;border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#edddb8,#9a7a3a);
+  box-shadow:0 2px 6px rgba(0,0,0,.55),inset 0 1px 2px rgba(255,255,255,.35);
+}
+.photo-tack::after{
+  content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+  width:3px;height:6px;background:#6a4f20;border-radius:0 0 2px 2px;
+}
+[data-skin="kiss"] .photo-tack{background:radial-gradient(circle at 38% 35%,#ffc0d0,#e0557a);}
+[data-skin="kiss"] .photo-tack::after{background:#c03060;}
+[data-skin="tower"] .photo-tack{background:radial-gradient(circle at 38% 35%,#b0d0f0,#2c6fad);}
+[data-skin="tower"] .photo-tack::after{background:#1a4a80;}
+[data-skin="soldier"] .photo-tack{background:radial-gradient(circle at 38% 35%,#c8d898,#5a7a10);}
+[data-skin="soldier"] .photo-tack::after{background:#3a5200;}
+[data-skin="someday"] .photo-tack{background:radial-gradient(circle at 38% 35%,#d0c0ff,#7a5fdf);}
+[data-skin="someday"] .photo-tack::after{background:#5040b0;}
+@media(max-width:960px){.photo-pin{display:none;}}
+
 /* ── QUOTE OVERLAY ──────────────────────────────────── */
 #quoteOverlay{
   display:none;position:fixed;inset:0;z-index:400;
@@ -1039,6 +1070,7 @@ const SKINS={
     stats:['知识总数','学习中','已掌握','完成率'],
     statusLabels:{todo:'待学习',learning:'学习中',done:'已掌握'},
     light:false,
+    photos:(()=>{const b='https://raw.githubusercontent.com/xiangrujob/museum-cf/main/frontend/assets/love/';return['IMG_2998.WEBP','IMG_2999.WEBP','IMG_3001.WEBP','IMG_3002.WEBP','IMG_3003.WEBP','IMG_3004.WEBP','IMG_3005.WEBP','IMG_3006.WEBP','IMG_3007.WEBP','IMG_3008.WEBP','IMG_3009.WEBP','IMG_3010.WEBP','IMG_3011.WEBP','IMG_3012.WEBP','IMG_3013.WEBP','IMG_3014.WEBP','IMG_3015.WEBP','IMG_3016.WEBP','IMG_3017.WEBP','IMG_3018.WEBP','IMG_3019.WEBP','IMG_3020.WEBP','IMG_3021.WEBP','IMG_3022.WEBP','IMG_3023.WEBP','IMG_3024.WEBP','IMG_3025.jpg','IMG_3027.jpg','IMG_3028.jpg'].map(f=>b+f);})(),
     quotes:[
       '我不要那种除了我爱你、请给我一杯水，之外就无话可说的人陪我走一辈子。',
       '欸，你有没有一种感觉？我们的十七岁，好像不过才是去年的事。',
@@ -1274,6 +1306,36 @@ function applySkin(id,showQuote=false){
   document.querySelectorAll('.skin-btn').forEach(b=>b.classList.toggle('active',b.dataset.skin===id));
   if(db.length)renderStats();
   if(showQuote)setTimeout(()=>showSkinQuote(id),120);
+}
+
+// ── PHOTO PINS ────────────────────────────────────────
+function placePhotoPins(skinId){
+  removePhotoPins();
+  const photos=SKINS[skinId]?.photos;
+  if(!photos||!photos.length)return;
+  const picks=[...photos].sort(()=>Math.random()-.5).slice(0,9);
+  const vw=window.innerWidth,vh=window.innerHeight;
+  const zone=Math.min(210,vw*0.16);
+  picks.forEach((url,i)=>{
+    const onLeft=i%2===0;
+    const x=onLeft
+      ? (Math.random()*zone - 55)
+      : (vw - zone - 80 + Math.random()*zone);
+    const y=38+Math.random()*(vh*0.88);
+    const rot=(Math.random()*22-11).toFixed(1);
+    const el=document.createElement('div');
+    el.className='photo-pin pin-fade';
+    el.style.cssText=`left:${x}px;top:${y}px;transform:rotate(${rot}deg);`;
+    el.innerHTML=`<div class="photo-frame"><div class="photo-tack"></div><img src="${url}" loading="lazy" alt=""></div>`;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('pin-fade')));
+  });
+}
+function removePhotoPins(){
+  document.querySelectorAll('.photo-pin').forEach(el=>{
+    el.classList.add('pin-fade');
+    setTimeout(()=>el.remove(),420);
+  });
 }
 
 let quoteTimer=null;
@@ -1553,6 +1615,7 @@ async function openDetail(wingId,pieceId){
   document.getElementById('mainView').style.display='none';
   document.getElementById('detailView').style.display='block';
   window.scrollTo(0,0);
+  placePhotoPins(currentSkin);
   try{const note=await apiFetch(`/api/pieces/${pieceId}/note`);document.getElementById('detNotes').value=note.content||'';const isMd=note.format==='markdown';switchNotesTab(isMd&&note.content?'preview':isMd?'markdown':'text');}
   catch(e){switchNotesTab('text');}
 }
@@ -1595,7 +1658,7 @@ async function saveDetail(){
   }catch(e){showBanner('Save failed','error');}
   finally{btn.disabled=false;}
 }
-function closeDetail(){document.getElementById('detailView').style.display='none';document.getElementById('mainView').style.display='block';renderAll();}
+function closeDetail(){removePhotoPins();document.getElementById('detailView').style.display='none';document.getElementById('mainView').style.display='block';renderAll();}
 
 // WING MODAL
 function openAddWing(){if(!isAuthed)return;wingEditId=null;document.getElementById('wingModalTitle').textContent='New wing';['wName','wEra','wImg','wDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('wingDeleteBtn').style.display='none';document.getElementById('wingModal').classList.add('show');}
