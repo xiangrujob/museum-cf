@@ -1553,7 +1553,7 @@ async function openDetail(wingId,pieceId){
   document.getElementById('mainView').style.display='none';
   document.getElementById('detailView').style.display='block';
   window.scrollTo(0,0);
-  try{const note=await apiFetch(`/api/pieces/${pieceId}/note`);document.getElementById('detNotes').value=note.content||'';switchNotesTab(note.format==='markdown'?'markdown':'text');}
+  try{const note=await apiFetch(`/api/pieces/${pieceId}/note`);document.getElementById('detNotes').value=note.content||'';const isMd=note.format==='markdown';switchNotesTab(isMd&&note.content?'preview':isMd?'markdown':'text');}
   catch(e){switchNotesTab('text');}
 }
 function renderDetStatus(cur){
