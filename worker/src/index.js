@@ -136,6 +136,17 @@ export default {
       return json({ id, sort_order: order }, 201);
     }
 
+    // ── PUT /api/pieces/reorder ──────────────────────────
+    if (method === 'PUT' && path === '/api/pieces/reorder') {
+      const body = await request.json();
+      if (!Array.isArray(body)) return err('Expected array');
+      if (body.length > 0) {
+        const stmt = env.DB.prepare(`UPDATE pieces SET sort_order=? WHERE id=?`);
+        await env.DB.batch(body.map(({ id, sort_order }) => stmt.bind(sort_order, id)));
+      }
+      return json({ ok: true });
+    }
+
     // ── PUT /api/pieces/:id ──────────────────────────────
     const pieceMatch = path.match(/^\/api\/pieces\/([^/]+)$/);
     if (method === 'PUT' && pieceMatch) {
